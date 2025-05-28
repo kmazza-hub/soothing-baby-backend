@@ -1,4 +1,3 @@
-// middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
@@ -15,10 +14,9 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.userId = decoded.userId; // attach user ID to request
+    req.userId = decoded._id; // ✅ FIXED: match your JWT structure
     next(); // proceed to the next middleware/controller
   } catch (err) {
     return res.status(401).json({ error: 'Invalid token' });
   }
 };
-
