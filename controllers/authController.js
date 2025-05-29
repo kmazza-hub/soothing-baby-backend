@@ -11,6 +11,8 @@ const generateToken = (user) => {
   return { user: payload, token };
 };
 
+console.log("📥 Received body:", req.body);
+
 // Register new user
 exports.register = async (req, res) => {
   const { email, password } = req.body;

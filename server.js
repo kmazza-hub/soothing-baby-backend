@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors'); // ✅ Only once
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,23 +15,21 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch((err) => console.error('❌ MongoDB error:', err));
 
 // ✅ Middleware
-const cors = require('cors');
-
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'https://your-frontend.netlify.app',
   credentials: true,
 }));
 
-app.use(express.json());
+app.use(express.json()); // ✅ This is critical and in the right place!
 
 // ✅ Routes
 const authRoutes = require('./routes/authRoutes');
 const videoRoutes = require('./routes/videoRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 
-app.use('/api/auth', authRoutes);       // Auth (login/register)
-app.use('/api/videos', videoRoutes);    // Video routes (GET/POST/DELETE)
-app.use('/api/images', imageRoutes);    // Optional: Images if used
+app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
+app.use('/api/images', imageRoutes);
 
 // ✅ Health Check
 app.get('/', (req, res) => {
