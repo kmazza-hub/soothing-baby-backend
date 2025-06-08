@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); // ✅ Only once
+const cors = require('cors');
+
+const routes = require('./routes'); // ✅ Centralized route index
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,17 +21,10 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN || 'https://your-frontend.netlify.app',
   credentials: true,
 }));
+app.use(express.json());
 
-app.use(express.json()); // ✅ This is critical and in the right place!
-
-// ✅ Routes
-const authRoutes = require('./routes/authRoutes');
-const videoRoutes = require('./routes/videoRoutes');
-const imageRoutes = require('./routes/imageRoutes');
-
-app.use('/api/auth', authRoutes);
-app.use('/api/videos', videoRoutes);
-app.use('/api/images', imageRoutes);
+// ✅ Unified Routes Entry
+app.use('/api', routes);
 
 // ✅ Health Check
 app.get('/', (req, res) => {
