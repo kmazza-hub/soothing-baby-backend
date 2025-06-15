@@ -1,6 +1,7 @@
-// routes/index.js
 const express = require('express');
 const router = express.Router();
+
+console.log("✅ routes/index.js is loaded");
 
 const authRoutes = require('./authRoutes');
 const imageRoutes = require('./imageRoutes');
