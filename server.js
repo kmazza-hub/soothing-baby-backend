@@ -23,6 +23,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(`🔍 Incoming Request: ${req.method} ${req.url}`);
+  next();
+});
+
 // ✅ Unified Routes Entry
 app.use('/api', routes);
 
@@ -32,6 +37,6 @@ app.get('/', (req, res) => {
 });
 
 // ✅ Start Server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server listening on port ${PORT}`);
 });
