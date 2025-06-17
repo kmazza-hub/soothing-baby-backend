@@ -8,6 +8,10 @@ const routes = require('./routes'); // ✅ Centralized route index
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const path = require("path");
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
