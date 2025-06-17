@@ -10,5 +10,7 @@ const videoRoutes = require('./videoRoutes');
 router.use('/auth', authRoutes);
 router.use('/images', imageRoutes);
 router.use('/videos', videoRoutes);
+router.use("/images", require("./soothingImageRoutes"));
+
 
 module.exports = router;
