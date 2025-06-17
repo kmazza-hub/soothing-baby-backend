@@ -14,11 +14,12 @@ exports.getVideos = async (req, res) => {
 
 // POST new video for the logged-in user
 exports.addVideo = async (req, res) => {
-  const { title, videoUrl } = req.body;
+  const { title, videoUrl, tag } = req.body; // 👈 include tag
   try {
     const newVideo = new FavoriteVideo({
       title,
       videoUrl,
+      tag: tag || "Untagged", // 👈 default if missing
       user: req.userId,
       addedAt: new Date()
     });
@@ -29,6 +30,7 @@ exports.addVideo = async (req, res) => {
     res.status(400).json({ error: 'Failed to save video' });
   }
 };
+
 
 // DELETE video only if owned by the logged-in user
 exports.deleteVideo = async (req, res) => {
