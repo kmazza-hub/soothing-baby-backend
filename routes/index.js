@@ -4,13 +4,11 @@ const router = express.Router();
 console.log("✅ routes/index.js is loaded");
 
 const authRoutes = require('./authRoutes');
-const imageRoutes = require('./imageRoutes');
 const videoRoutes = require('./videoRoutes');
+const soothingImageRoutes = require('./soothingImageRoutes'); // ✅ Rename for clarity
 
 router.use('/auth', authRoutes);
-router.use('/images', imageRoutes);
 router.use('/videos', videoRoutes);
-router.use("/images", require("./soothingImageRoutes"));
-
+router.use('/images', soothingImageRoutes); // ✅ Only use one image route
 
 module.exports = router;

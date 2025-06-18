@@ -1,24 +1,32 @@
 const SoothingImage = require("../models/SoothingImage");
 
-// Get latest image for the user
+// GET the current user's soothing image
 exports.getImage = async (req, res) => {
   try {
-    const image = await SoothingImage.findOne({ user: req.userId }).sort({ uploadedAt: -1 });
-    if (!image) return res.json({ imageUrl: null });
+    const image = await SoothingImage.findOne({ user: req.userId }).sort({ addedAt: -1 });
+    if (!image) return res.json({});
     res.json(image);
   } catch (err) {
+    console.error("❌ Failed to fetch image:", err);
     res.status(500).json({ error: "Failed to fetch image" });
   }
 };
 
-// Save a new image
-exports.uploadImage = async (req, res) => {
-  const { imageUrl } = req.body;
+// POST or update soothing image for the user
+exports.saveImage = async (req, res) => {
   try {
-    const newImage = new SoothingImage({ imageUrl, user: req.userId });
-    await newImage.save();
-    res.status(201).json(newImage);
+    const { imageUrl } = req.body;
+    if (!imageUrl) return res.status(400).json({ error: "Missing imageUrl" });
+
+    const updated = await SoothingImage.findOneAndUpdate(
+      { user: req.userId },
+      { imageUrl, addedAt: new Date() },
+      { new: true, upsert: true }
+    );
+
+    res.status(201).json(updated);
   } catch (err) {
-    res.status(400).json({ error: "Failed to upload image" });
+    console.error("❌ Failed to save image:", err);
+    res.status(500).json({ error: "Failed to save image" });
   }
 };
