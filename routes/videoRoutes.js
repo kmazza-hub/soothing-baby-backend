@@ -1,10 +1,10 @@
-// routes/videoRoutes.js
 const express = require('express');
 const router = express.Router();
 const {
   getVideos,
   addVideo,
   deleteVideo,
+  updateVideoOrder, // ✅ Add this
 } = require('../controllers/videoController');
 const auth = require('../middleware/authMiddleware');
 
@@ -16,5 +16,8 @@ router.post('/', auth, addVideo);
 
 // ✅ Delete a video by ID for the authenticated user
 router.delete('/:id', auth, deleteVideo);
+
+// ✅ Reorder videos for the authenticated user
+router.put('/reorder', auth, updateVideoOrder); // ⬅️ NEW
 
 module.exports = router;
